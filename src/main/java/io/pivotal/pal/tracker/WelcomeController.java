@@ -11,8 +11,7 @@ public class WelcomeController {
 
 
     public WelcomeController( @Value("${WELCOME_MESSAGE}") String message) {
-        super();
-        this.message = message;
+           this.message = message;
     }
 
     @GetMapping("/")
