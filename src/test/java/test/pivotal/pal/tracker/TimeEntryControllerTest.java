@@ -35,6 +35,7 @@ public class TimeEntryControllerTest {
 
         long timeEntryId = 1L;
         TimeEntry expectedResult = new TimeEntry(timeEntryId, projectId, userId, LocalDate.parse("2017-01-08"), 8);
+
         doReturn(expectedResult)
             .when(timeEntryRepository)
             .create(any(TimeEntry.class));
@@ -42,7 +43,7 @@ public class TimeEntryControllerTest {
 
         ResponseEntity response = controller.create(timeEntryToCreate);
 
-
+        //This failed because the controller constructor never use the mock repository  --> Raymond, I have changed oneline in TimeEntryController to make it works
         verify(timeEntryRepository).create(timeEntryToCreate);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isEqualTo(expectedResult);
@@ -60,7 +61,7 @@ public class TimeEntryControllerTest {
 
         ResponseEntity<TimeEntry> response = controller.read(timeEntryId);
 
-        verify(timeEntryRepository).find(timeEntryId);
+       verify(timeEntryRepository).find(timeEntryId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(expected);
     }
@@ -111,6 +112,7 @@ public class TimeEntryControllerTest {
     @Test
     public void testUpdate_NotFound() throws Exception {
         long nonExistentTimeEntryId = 1L;
+
         doReturn(null)
             .when(timeEntryRepository)
             .update(eq(nonExistentTimeEntryId), any(TimeEntry.class));
