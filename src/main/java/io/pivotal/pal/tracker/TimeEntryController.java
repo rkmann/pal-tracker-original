@@ -29,7 +29,7 @@ public class TimeEntryController {
         actionCounter = meterRegistry.counter("timeEntry.actionCounter");
     }
 
-    @PostMapping("/time-entries")
+    @PostMapping()
     //@RequestMapping(value = "/time-entries", method = RequestMethod.POST)
     public ResponseEntity create( @RequestBody TimeEntry timeEntryToCreate) {
 
@@ -40,7 +40,7 @@ public class TimeEntryController {
     }
 
     //@RequestMapping(value = "/time-entries/{id}", method = RequestMethod.GET)
-    @GetMapping("/time-entries/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<TimeEntry> read(@PathVariable long id) {
         TimeEntry timeEntry = this.timeEntryRepository.find(id);
         if(isNull(timeEntry)){
@@ -51,7 +51,7 @@ public class TimeEntryController {
         }
     }
 
-    @GetMapping("/time-entries")
+    @GetMapping()
     public ResponseEntity<List<TimeEntry>> list() {
         actionCounter.increment();
         return new ResponseEntity<List<TimeEntry>>(this.timeEntryRepository.list(), HttpStatus.OK);
@@ -60,7 +60,7 @@ public class TimeEntryController {
 
 
     //@RequestMapping(value = "/time-entries", method = RequestMethod.PUT)
-    @PutMapping("/time-entries/{id}")
+    @PutMapping("{id}")
     public ResponseEntity update(@PathVariable long id,@RequestBody TimeEntry expected) {
 
         TimeEntry timeEntry = this.timeEntryRepository.update(id,expected);
@@ -73,7 +73,7 @@ public class TimeEntryController {
 
     }
 
-    @DeleteMapping("/time-entries/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<TimeEntry> delete(@PathVariable long id) {
         this.timeEntryRepository.delete(id);
         actionCounter.increment();
